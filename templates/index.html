@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Text Predictor</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Text Classification App</h1>
+    <form method="POST">
+      <textarea name="user_input" placeholder="Enter your text here..." required></textarea>
+      <br>
+      <button type="submit">Predict</button>
+    </form>
+
+    {% if prediction %}
+      <div class="result">
+        <strong>Prediction:</strong> {{ prediction }}
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
