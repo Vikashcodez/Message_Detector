@@ -1,0 +1,64 @@
+/* Main styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+}
+
+.hero-section {
+    padding: 5rem 0;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    margin-bottom: 3rem;
+}
+
+.features-section {
+    margin-top: 3rem;
+}
+
+.feature-icon {
+    color: #0d6efd;
+}
+
+.card {
+    border-radius: 0.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+footer {
+    margin-top: auto;
+}
+
+/* Auth pages */
+.auth-container {
+    max-width: 500px;
+    margin: 3rem auto;
+}
+
+/* Result page styles */
+.alert-light {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 3rem 0;
+        text-align: center;
+    }
+    
+    .hero-section img {
+        margin-top: 2rem;
+    }
+}

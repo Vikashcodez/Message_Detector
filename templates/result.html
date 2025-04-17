@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0">Classification Result</h3>
+                </div>
+                <div class="card-body">
+                    <h4 class="mb-3">Your Text:</h4>
+                    <div class="alert alert-light">
+                        {{ message }}
+                    </div>
+                    
+                    <h4 class="mb-3">Prediction:</h4>
+                    <div class="alert alert-{{ 'success' if prediction == 'positive' else 'warning' }}">
+                        <strong>{{ prediction|capitalize }}</strong>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('index') }}" class="btn btn-primary">Try Another</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card shadow-sm">
+                <div class="card-header bg-secondary text-white">
+                    <h3 class="mb-0">Analysis Details</h3>
+                </div>
+                <div class="card-body">
+                    <p>The classification was performed using our trained machine learning model which analyzes various features of your text to determine its category.</p>
+                    <p>For more technical details about how the model works, visit our <a href="{{ url_for('notebook') }}">Notebook</a> section.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

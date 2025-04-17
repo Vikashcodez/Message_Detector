@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">Advanced Text Classification</h1>
+                <p class="lead mb-4">Our powerful machine learning model can analyze and classify your text with high accuracy. Sign up now to try it out!</p>
+                <div class="d-flex gap-3">
+                    {% if 'user_id' not in session %}
+                    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-4">Sign Up</a>
+                    <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-lg px-4">Login</a>
+                    {% else %}
+                    <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg px-4">Try Classifier</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <img src="https://via.placeholder.com/600x400" alt="Text Classification" class="img-fluid rounded shadow">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="features-section py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Key Features</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="feature-icon mb-3">
+                            <i class="bi bi-robot fs-1 text-primary"></i>
+                        </div>
+                        <h4>AI-Powered</h4>
+                        <p>Utilizes advanced machine learning algorithms for accurate text classification.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="feature-icon mb-3">
+                            <i class="bi bi-shield-lock fs-1 text-primary"></i>
+                        </div>
+                        <h4>Secure</h4>
+                        <p>User authentication with secure password hashing protects your data.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="feature-icon mb-3">
+                            <i class="bi bi-globe fs-1 text-primary"></i>
+                        </div>
+                        <h4>Multilingual</h4>
+                        <p>Supports text in multiple languages with automatic translation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
