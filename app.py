@@ -15,10 +15,19 @@ from nltk.stem import WordNetLemmatizer
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 from functools import wraps
+from werkzeug.utils import secure_filename
+import PyPDF2
+from io import BytesIO
 
 # Initialize Flask app
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
+
+# Configure upload folder
+UPLOAD_FOLDER = 'uploads'
+ALLOWED_EXTENSIONS = {'pdf'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Configure database
 DATABASE = 'signup.db'
@@ -43,6 +52,23 @@ def get_db():
     db = sqlite3.connect(DATABASE)
     db.row_factory = sqlite3.Row
     return db
+
+# Check if file extension is allowed
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# Extract text from PDF
+def extract_text_from_pdf(file):
+    try:
+        pdf_reader = PyPDF2.PdfReader(file)
+        text = ""
+        for page in pdf_reader.pages:
+            text += page.extract_text()
+        return text
+    except Exception as e:
+        print(f"Error extracting text from PDF: {e}")
+        return None
 
 # Create tables if they don't exist
 def init_db():
@@ -144,11 +170,36 @@ def index():
 @login_required
 def predict():
     if request.method == "POST":
-        user_input = request.form['message']
-        
-        if not user_input.strip():
-            flash('Please enter some text to analyze', 'warning')
-            return redirect(url_for('index'))
+        # Check if a file was uploaded
+        if 'file' in request.files:
+            file = request.files['file']
+            if file.filename == '':
+                flash('No selected file', 'warning')
+                return redirect(url_for('index'))
+            
+            if file and allowed_file(file.filename):
+                try:
+                    # Read PDF file
+                    pdf_text = extract_text_from_pdf(BytesIO(file.read()))
+                    if not pdf_text:
+                        flash('Could not extract text from PDF', 'danger')
+                        return redirect(url_for('index'))
+                    
+                    user_input = pdf_text
+                    input_type = 'PDF'
+                except Exception as e:
+                    flash(f'Error processing PDF: {str(e)}', 'danger')
+                    return redirect(url_for('index'))
+            else:
+                flash('Only PDF files are allowed', 'warning')
+                return redirect(url_for('index'))
+        else:
+            # Get text from form
+            user_input = request.form['message']
+            if not user_input.strip():
+                flash('Please enter some text or upload a PDF', 'warning')
+                return redirect(url_for('index'))
+            input_type = 'Text'
         
         try:
             # Translate to English if needed
@@ -162,7 +213,10 @@ def predict():
         try:
             vectorized_input = vectorizer.transform([cleaned_input])
             prediction = model.predict(vectorized_input)[0]
-            return render_template('result.html', prediction=prediction, message=user_input)
+            return render_template('result.html', 
+                                  prediction=prediction, 
+                                  message=user_input,
+                                  input_type=input_type)
         except Exception as e:
             print(f"Prediction error: {e}")
             flash('Error processing your request. Please try again.', 'danger')

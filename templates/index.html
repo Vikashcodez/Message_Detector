@@ -9,11 +9,18 @@
                     <h3 class="mb-0">Text Classification</h3>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ url_for('predict') }}">
+                    <form method="POST" action="{{ url_for('predict') }}" enctype="multipart/form-data">
                         <div class="mb-3">
                             <label for="message" class="form-label">Enter your text:</label>
-                            <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                            <textarea class="form-control" id="message" name="message" rows="5"></textarea>
                         </div>
+                        
+                        <div class="mb-3">
+                            <label for="file" class="form-label">Or upload a PDF file:</label>
+                            <input class="form-control" type="file" id="file" name="file" accept=".pdf">
+                            <div class="form-text">Only PDF files are accepted</div>
+                        </div>
+                        
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary">Classify Text</button>
                         </div>
@@ -27,7 +34,7 @@
                 </div>
                 <div class="card-body">
                     <ol>
-                        <li>Enter any text in the text area above</li>
+                        <li>Enter any text in the text area <strong>OR</strong> upload a PDF file</li>
                         <li>Click "Classify Text" to analyze your input</li>
                         <li>View the classification results</li>
                     </ol>

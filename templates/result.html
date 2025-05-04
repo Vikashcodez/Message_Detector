@@ -9,8 +9,10 @@
                     <h3 class="mb-0">Classification Result</h3>
                 </div>
                 <div class="card-body">
-                    <h4 class="mb-3">Your Text:</h4>
-                    <div class="alert alert-light">
+                    <h4 class="mb-3">Input Type: {{ input_type }}</h4>
+                    
+                    <h4 class="mb-3">Your {% if input_type == 'PDF' %}PDF Content{% else %}Text{% endif %}:</h4>
+                    <div class="alert alert-light" style="max-height: 300px; overflow-y: auto;">
                         {{ message }}
                     </div>
                     
